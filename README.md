@@ -1,8 +1,39 @@
 # YamlValidations
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/yaml_validations`. To experiment with that code, run `bin/console` for an interactive prompt.
+Convert this:
 
-TODO: Delete this and the text above, and describe your gem
+    books:
+      required:
+        authors:
+          schema: author
+
+        author:
+          required:
+            id: str?
+            name: str?
+            org_id: int?
+          optional:
+            address: str?
+
+To `dry-validation`
+
+    BooksSchema = Dry::Validation.Schema do
+      required(:authors).schema(AuthorSchema)
+      optional(:address).maybe(:str?)
+    end
+
+    Books::AuthorSchema = Dry::Validation.Schema do
+      required(:id).filled(:str?)
+      required(:name).filled(:str?)
+      required(:org_id).filled(:int?)
+      optional(:address).maybe(:str?)
+    end
+
+Via:
+
+    yaml_validations generate dry-validation books.yaml
+
+Other validation formats will be configured later.
 
 ## Installation
 
@@ -19,10 +50,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install yaml_validations
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 
