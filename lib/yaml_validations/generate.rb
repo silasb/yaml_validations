@@ -15,8 +15,8 @@ module YamlValidations
       end
 
       q = $schemas.each_with_index do |(klass, validations), i|
-        schema = "This is AUTO-GENERATED from yaml-validations dry-validation #{yaml_file}\n"
-        schema << "Please edit #{yaml_file} if you want to re-generate the schema.\n\n"
+        schema = "# This is AUTO-GENERATED from yaml-validations dry-validation #{yaml_file}\n"
+        schema << "# Please edit #{yaml_file} if you want to re-generate the schema.\n\n"
         schema << "#{klass.map(&:camelize).join("::")}Schema = Dry::Validation.Params do\n"
 
         ['required', 'optional'].each do |section_name|
