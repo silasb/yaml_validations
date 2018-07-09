@@ -1,5 +1,7 @@
 require 'yaml'
 
+require_relative './utils'
+
 module YamlValidations
   class Generate
     def self.generate(yaml_file)
@@ -15,7 +17,7 @@ module YamlValidations
       q = $schemas.each_with_index do |(klass, validations), i|
         schema = "This is AUTO-GENERATED from yaml-validations dry-validation #{yaml_file}\n"
         schema << "Please edit #{yaml_file} if you want to re-generate the schema.\n\n"
-        schema << "#{klass.map(&:capitalize).join("::")}Schema = Dry::Validation.Params do\n"
+        schema << "#{klass.map(&:camelize).join("::")}Schema = Dry::Validation.Params do\n"
 
         ['required', 'optional'].each do |section_name|
           section = validations[section_name]
@@ -66,12 +68,12 @@ module YamlValidations
               if schema_type.is_a? Array
                 schema_type = schema_type.first
                 root_klass.push schema_type
-                schema_klass = root_klass.map(&:capitalize).join("::")
+                schema_klass = root_klass.map(&:camelize).join("::")
 
                 $schemas[klasses][section_name] << "required(:#{field}).each { schema(#{schema_klass}Schema) }"
               elsif schema_type.is_a? String
                 root_klass.push schema_type
-                schema_klass = root_klass.map(&:capitalize).join("::")
+                schema_klass = root_klass.map(&:camelize).join("::")
                 $schemas[klasses][section_name] << "required(:#{field}).schema(#{schema_klass}Schema)"
               end
 

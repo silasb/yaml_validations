@@ -35,6 +35,10 @@ Via:
 
 Other validation formats will be configured later.
 
+## TODO
+
+- [ ] remove global $schemas
+
 ## Installation
 
 Add this line to your application's Gemfile:
